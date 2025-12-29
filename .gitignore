@@ -1,0 +1,70 @@
+# --------------------
+# Python / venv
+# --------------------
+.venv/
+venv/
+ENV/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+dist/
+build/
+pip-wheel-metadata/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+
+# --------------------
+# IDE / Editor
+# --------------------
+.vscode/
+.idea/
+*.iml
+
+# --------------------
+# OS junk
+# --------------------
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# --------------------
+# Env / secrets
+# --------------------
+.env
+.env.*
+*.key
+*.pem
+
+# --------------------
+# Logs
+# --------------------
+*.log
+
+# --------------------
+# Chroma DB (local persistent storage)
+# --------------------
+chroma_data/
+chroma_db/
+*.sqlite3
+
+# --------------------
+# Upload / temp files
+# --------------------
+tmp_uploads/
+uploads/
+*.tmp
+
+# --------------------
+# Models / caches (HuggingFace)
+# --------------------
+.cache/
+.cache/**
+**/.cache/**
+huggingface/
+hf_cache/
