@@ -3,7 +3,7 @@ fastapi==0.128.0
 fastapi-mcp==0.4.0
 uvicorn==0.40.0
 python-multipart==0.0.21
-
+fastmcp==2.14.1
 chromadb==1.4.0
 pypdf==6.5.0
 sentence-transformers==5.2.0
