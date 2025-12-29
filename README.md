@@ -5,23 +5,23 @@
 cd C:\Rag_Project
 python -m venv .venv
 ```
-###2) 가상환경 활성화
+### 2) 가상환경 활성화
 ```powershell
 코드 복사
 .\.venv\Scripts\Activate.ps1
 ```
-###3) 패키지 설치
+### 3) 패키지 설치
 ```powershell
 코드 복사
 python -m pip install -U pip
 pip install -r .\requirements.txt
 ```
-###4) 가상환경 비활성화(나가기)
+### 4) 가상환경 비활성화(나가기)
 ```powershell
 코드 복사
 deactivate
 ```
-##Git 사용법 (브랜치 생성 + 코드 가져오기)
+## Git 사용법 (브랜치 생성 + 코드 가져오기)
 1) 저장소 처음 받기(클론)
 ```powershell
 코드 복사
