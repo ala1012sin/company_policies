@@ -18,7 +18,6 @@ pip install -r .\requirements.txt
 ```
 ### 4) 가상환경 비활성화(나가기)
 ```powershell
-코드 복사
 deactivate
 ```
 ## Git 사용법 (브랜치 생성 + 코드 가져오기)
