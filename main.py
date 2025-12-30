@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastmcp import FastMCP
 import json
 import os
+from pdf_chunking import collection
 
 mcp = FastMCP("MES-MCP")
 mcp_app = mcp.http_app()
@@ -12,6 +13,23 @@ app = FastAPI(
     version="1.0.0",
     lifespan=mcp_app.lifespan
 )
+
+@mcp.tool()
+def searcing_chromadb(query: str, top_k: int = 5):
+    results = collection.query(
+        query_texts=[query],
+        n_results=top_k,
+        include=["documents", "metadatas"]
+    )
+    response = []
+    for doc, meta in zip(results["documents"][0], results["metadatas"][0]):
+        response.append({
+            "document": doc,
+            "metadata": meta
+        })
+    return json.dumps(response, ensure_ascii=False, indent=2)
+
+
 
 
 app.mount("/", mcp_app)
