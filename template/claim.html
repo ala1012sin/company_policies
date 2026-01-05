@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>고객 클레임 보고서</title>
+  <style>
+    /* ===== Print/A4 ===== */
+    @page { size: A4; margin: 14mm; }
+    html, body { height: 100%; }
+    body {
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif;
+      color: #111;
+      background: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      padding: 14mm;
+      box-sizing: border-box;
+    }
+
+    /* ===== Common ===== */
+    h1 {
+      text-align: center;
+      margin: 0 0 10mm 0;
+      font-size: 26px;
+      letter-spacing: -0.5px;
+    }
+    .box {
+      border: 1px solid #2b2b2b;
+      border-collapse: collapse;
+      width: 100%;
+      table-layout: fixed;
+    }
+    .box td, .box th {
+      border: 1px solid #2b2b2b;
+      padding: 8px 10px;
+      vertical-align: middle;
+      font-size: 14px;
+      line-height: 1.25;
+      word-break: keep-all;
+    }
+    .label {
+      background: #e9f0f8;
+      font-weight: 700;
+      width: 22%;
+    }
+    .label.right { text-align: right; }
+    .value {
+      background: #fff;
+    }
+    .section-title {
+      background: #e9f0f8;
+      font-weight: 800;
+      font-size: 16px;
+      padding: 10px 12px;
+    }
+    .subhead {
+      background: #f3f6fb;
+      font-weight: 800;
+      color: #0b3a6e;
+    }
+    .field {
+      width: 100%;
+      border: 0;
+      outline: none;
+      font: inherit;
+      background: transparent;
+    }
+    .field::placeholder { color: #b0b6bf; }
+    .textarea {
+      min-height: 70px;
+      resize: vertical;
+      white-space: pre-wrap;
+    }
+
+    /* Checkbox style */
+    .checks { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+    .check-item { display: inline-flex; gap: 6px; align-items: center; }
+    input[type="checkbox"] { width: 16px; height: 16px; }
+
+    /* spacing blocks */
+    .mt-8 { margin-top: 8mm; }
+    .mt-4 { margin-top: 4mm; }
+
+    /* Make form look clean when printing */
+    @media print {
+      .page { padding: 0; }
+      body { background: #fff; }
+      .field::placeholder { color: transparent; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>고객 클레임 보고서</h1>
+
+    <!-- ===== Header Info ===== -->
+    <table class="box">
+      <colgroup>
+        <col style="width: 18%;">
+        <col style="width: 32%;">
+        <col style="width: 18%;">
+        <col style="width: 32%;">
+      </colgroup>
+      <tr>
+        <td class="label">보고서 번호</td>
+        <td class="value"><input class="field" placeholder="예: CR-2025-001" /></td>
+        <td class="label">작성일자</td>
+        <td class="value"><input class="field" placeholder="예: 2025-12-30" /></td>
+      </tr>
+      <tr>
+        <td class="label">작성자</td>
+        <td class="value"><input class="field" placeholder="예: 홍길동" /></td>
+        <td class="label">주관 부서</td>
+        <td class="value"><input class="field" placeholder="예: 품질팀" /></td>
+      </tr>
+      <tr>
+        <td class="label">담당 책임자</td>
+        <td class="value"><input class="field" placeholder="예: 김OO 팀장" /></td>
+        <td class="label">클레임 유형</td>
+        <td class="value">
+          <div class="checks">
+            <label class="check-item"><input type="checkbox" /> 품질</label>
+            <label class="check-item"><input type="checkbox" /> 납기</label>
+            <label class="check-item"><input type="checkbox" /> 서비스</label>
+            <label class="check-item"><input type="checkbox" /> Critical</label>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- ===== Section 1 ===== -->
+    <div class="mt-8"></div>
+    <table class="box">
+      <tr>
+        <td class="section-title" colspan="4">1. 클레임 상세 내용</td>
+      </tr>
+      <colgroup>
+        <col style="width: 18%;">
+        <col style="width: 32%;">
+        <col style="width: 18%;">
+        <col style="width: 32%;">
+      </colgroup>
+      <tr>
+        <td class="label">고객사 / 고객명</td>
+        <td class="value" colspan="3"><input class="field" placeholder="예: ABC전자 / 이OO" /></td>
+      </tr>
+      <tr>
+        <td class="label">발생 일시</td>
+        <td class="value"><input class="field" placeholder="예: 2025-12-29 15:30" /></td>
+        <td class="label">접수 채널</td>
+        <td class="value"><input class="field" placeholder="예: 이메일/전화/포털" /></td>
+      </tr>
+      <tr>
+        <td class="label">핵심 내용</td>
+        <td class="value" colspan="3">
+          <textarea class="field textarea" placeholder="클레임 핵심 내용을 요약해서 작성"></textarea>
+        </td>
+      </tr>
+    </table>
+
+    <!-- ===== Section 2 ===== -->
+    <div class="mt-8"></div>
+    <table class="box">
+      <tr>
+        <td class="section-title" colspan="4">2. 유형별 상세 분석</td>
+      </tr>
+
+      <!-- 품질 클레임 -->
+      <tr>
+        <td class="subhead" colspan="4">[품질 클레임]</td>
+      </tr>
+      <colgroup>
+        <col style="width: 18%;">
+        <col style="width: 32%;">
+        <col style="width: 18%;">
+        <col style="width: 32%;">
+      </colgroup>
+      <tr>
+        <td class="label">제품명 / 모델번호</td>
+        <td class="value"><input class="field" placeholder="예: P-ALPHA / A1" /></td>
+        <td class="label">검출 현상</td>
+        <td class="value"><input class="field" placeholder="예: 외관 흠집, 치수 불량 등" /></td>
+      </tr>
+      <tr>
+        <td class="label">첨부 자료</td>
+        <td class="value" colspan="3"><input class="field" placeholder="예: 사진, 로그, 검사 데이터 등" /></td>
+      </tr>
+      <tr>
+        <td class="label">발생 원인</td>
+        <td class="value" colspan="3"><textarea class="field textarea" placeholder="예: 공정 조건 편차"></textarea></td>
+      </tr>
+      <tr>
+        <td class="label">유출 원인</td>
+        <td class="value" colspan="3"><textarea class="field textarea" placeholder="예: 검사 누락, 샘플링 부족"></textarea></td>
+      </tr>
+
+      <!-- 납기 클레임 -->
+      <tr>
+        <td class="subhead" colspan="4">[납기 클레임]</td>
+      </tr>
+      <tr>
+        <td class="label">주문 번호</td>
+        <td class="value"><input class="field" placeholder="예: SO-12345" /></td>
+        <td class="label">당초 납기일</td>
+        <td class="value"><input class="field" placeholder="예: 2025-12-25" /></td>
+      </tr>
+      <tr>
+        <td class="label">실제 지연 기간</td>
+        <td class="value"><input class="field" placeholder="예: 3일 / 1주" /></td>
+        <td class="label">지연 사유</td>
+        <td class="value"><input class="field" placeholder="예: 부품 수급 지연" /></td>
+      </tr>
+
+      <!-- 서비스 클레임 -->
+      <tr>
+        <td class="subhead" colspan="4">[서비스 클레임]</td>
+      </tr>
+      <tr>
+        <td class="label">관련 담당자</td>
+        <td class="value"><input class="field" placeholder="예: 고객지원팀 OOO" /></td>
+        <td class="label">불편 포인트</td>
+        <td class="value"><input class="field" placeholder="예: 응대 지연, 안내 미흡 등" /></td>
+      </tr>
+      <tr>
+        <td class="label">사실 관계 확인</td>
+        <td class="value" colspan="3"><textarea class="field textarea" placeholder="통화 기록/메일 내용/내부 확인 결과"></textarea></td>
+      </tr>
+    </table>
+
+    <!-- ===== Section 3 & 4 ===== -->
+    <div class="mt-8"></div>
+    <table class="box">
+      <colgroup>
+        <col style="width: 18%;">
+        <col style="width: 82%;">
+      </colgroup>
+
+      <tr>
+        <td class="section-title" colspan="2">3. 조치 사항 및 결과</td>
+      </tr>
+      <tr>
+        <td class="label">긴급 조치</td>
+        <td class="value"><textarea class="field textarea" placeholder="예: 출하 보류, 전수 검사, 대체 출하 등"></textarea></td>
+      </tr>
+      <tr>
+        <td class="label">규격 합의 여부</td>
+        <td class="value">
+          <div class="checks">
+            <label class="check-item"><input type="checkbox" /> 완료</label>
+            <label class="check-item"><input type="checkbox" /> 합의 중</label>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="section-title" colspan="2">4. 재발 방지 대책</td>
+      </tr>
+      <tr>
+        <td class="label">원인 분석 결과</td>
+        <td class="value"><textarea class="field textarea" placeholder="예: 5Why, Fishbone, 공정 조건/검사 기준 개선 등"></textarea></td>
+      </tr>
+      <tr>
+        <td class="label">재발 방지 조치</td>
+        <td class="value"><textarea class="field textarea" placeholder="예: 표준서 개정, 공정 파라미터 락, 검사 강화, 교육 등"></textarea></td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>지출결의서</title>
+  <style>
+    /* ===== Print/A4 ===== */
+    @page { size: A4; margin: 14mm; }
+    body{
+      font-family: "Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR", Arial, sans-serif;
+      color:#111; background:#fff; margin:0; padding:0;
+    }
+    .page{
+      width:210mm; min-height:297mm;
+      margin:0 auto; padding:14mm; box-sizing:border-box;
+    }
+
+    /* ===== Common ===== */
+    h1{
+      text-align:center;
+      margin: 0 0 8mm 0;
+      font-size: 26px;
+      letter-spacing:-0.6px;
+    }
+
+    .box{
+      width:100%;
+      border-collapse:collapse;
+      table-layout:fixed;
+      border:1px solid #2b2b2b;
+    }
+    .box td,.box th{
+      border:1px solid #2b2b2b;
+      padding:8px 10px;
+      vertical-align:middle;
+      font-size:14px;
+      line-height:1.25;
+      word-break:keep-all;
+    }
+    .label{
+      background:#e9f0f8;
+      font-weight:700;
+    }
+    .section{
+      background:#e9f0f8;
+      font-weight:800;
+      font-size:16px;
+      padding:10px 12px;
+    }
+    .field{
+      width:100%;
+      border:0;
+      outline:none;
+      font:inherit;
+      background:transparent;
+    }
+    .field::placeholder{ color:#b0b6bf; }
+    textarea.field{
+      min-height:78px;
+      resize:vertical;
+      white-space:pre-wrap;
+    }
+
+    .checks{ display:flex; gap:14px; align-items:center; flex-wrap:wrap; }
+    .check-item{ display:inline-flex; gap:6px; align-items:center; }
+    input[type="checkbox"]{ width:16px; height:16px; }
+    .center{ text-align:center; }
+    .right{ text-align:right; }
+
+    .mt-6{ margin-top:6mm; }
+    .mt-8{ margin-top:8mm; }
+
+    /* expense table */
+    .exp th{
+      background:#e9f0f8;
+      font-weight:800;
+      text-align:center;
+    }
+    .exp td{ height:34px; }
+    .sumcell{ background:#e9f0f8; font-weight:800; text-align:center; }
+
+    /* attachment area */
+    .note{
+      margin-top:6mm;
+      font-size:12.5px;
+      color:#222;
+    }
+    .attach-wrap{
+      margin-top:5mm;
+      border:1px solid #cfd6df;
+      background:#f3f6fb;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:10px 12px;
+      gap:10px;
+    }
+    .attach-left{
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+      font-size:14px;
+    }
+    .thumbs{
+      display:flex; gap:8px; align-items:center; flex-wrap:wrap;
+    }
+    .thumb{
+      width:34px; height:26px;
+      border:1px solid #c7cfda;
+      background:#fff;
+      display:flex; align-items:center; justify-content:center;
+      font-size:14px;
+      border-radius:4px;
+    }
+    .attach-right{
+      display:flex; align-items:center; gap:8px;
+      font-size:14px; font-weight:700;
+    }
+    .camera{
+      width:26px; height:20px; border:1px solid #c7cfda;
+      border-radius:4px; display:inline-flex;
+      align-items:center; justify-content:center;
+      background:#fff;
+      font-size:14px;
+    }
+
+    @media print{
+      .page{ padding:0; }
+      .field::placeholder{ color:transparent; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <h1>지출결의서</h1>
+
+    <!-- ===== 상단 결재/문서 정보 ===== -->
+    <table class="box">
+      <colgroup>
+        <col style="width:18%;">
+        <col style="width:46%;">
+        <col style="width:18%;">
+        <col style="width:18%;">
+      </colgroup>
+
+      <tr>
+        <td class="label">
+          <div class="checks">
+            <label class="check-item"><input type="checkbox"> 증빙</label>
+          </div>
+        </td>
+        <td class="label">
+          <div class="checks" style="justify-content:flex-start;">
+            <span style="font-weight:800;">담당</span>
+            <label class="check-item"><input type="checkbox"> 부사</label>
+            <label class="check-item"><input type="checkbox"> 부서장</label>
+            <label class="check-item"><input type="checkbox"> 임원</label>
+          </div>
+        </td>
+        <td class="label right">문서번호:</td>
+        <td class="value"><input class="field" placeholder="예: FIN-EXP-2025-001"></td>
+      </tr>
+
+      <tr>
+        <td class="label">결재자:</td>
+        <td class="value"><input class="field" placeholder="예: 홍길동"></td>
+        <td class="label right">결재일자:</td>
+        <td class="value"><input class="field" placeholder="예: 2025-12-30"></td>
+      </tr>
+
+      <tr>
+        <td class="label">작성자:</td>
+        <td class="value"><input class="field" placeholder="예: 김OO"></td>
+        <td class="label right"></td>
+        <td class="value"></td>
+      </tr>
+    </table>
+
+    <!-- ===== 1. 기본정보 ===== -->
+    <div class="mt-8"></div>
+    <table class="box">
+      <tr><td class="section" colspan="4">1. 기본정보</td></tr>
+
+      <colgroup>
+        <col style="width:18%;">
+        <col style="width:42%;">
+        <col style="width:18%;">
+        <col style="width:22%;">
+      </colgroup>
+
+      <tr>
+        <td class="label">신청부서:</td>
+        <td class="value"><input class="field" placeholder="예: 재무회계팀"></td>
+        <td class="label center">소속 / 직급</td>
+        <td class="value"><input class="field" placeholder="예: 생산팀 / 대리"></td>
+      </tr>
+
+      <tr>
+        <td class="label">신청일자:</td>
+        <td class="value"><input class="field" placeholder="예: 2025-12-30"></td>
+        <td class="label">신청월:</td>
+        <td class="value"><input class="field" placeholder="예: 2025년 12월"></td>
+      </tr>
+    </table>
+
+    <!-- ===== 2. 지출 내역 ===== -->
+    <div class="mt-8"></div>
+    <table class="box exp">
+      <tr><td class="section" colspan="5">2. 지출 내역</td></tr>
+
+      <colgroup>
+        <col style="width:22%;">
+        <col style="width:16%;">
+        <col style="width:28%;">
+        <col style="width:16%;">
+        <col style="width:18%;">
+      </colgroup>
+
+      <tr>
+        <th>구분</th>
+        <th>지출일자</th>
+        <th>비용 항목</th>
+        <th>금액</th>
+        <th>비고</th>
+      </tr>
+
+      <!-- rows -->
+      <tr>
+        <td><label class="check-item"><input type="checkbox"> 교통비</label></td>
+        <td><input class="field" placeholder="YYYY-MM-DD"></td>
+        <td><input class="field" placeholder="예: KTX 왕복"></td>
+        <td><input class="field right" placeholder="0"></td>
+        <td><input class="field" placeholder=""></td>
+      </tr>
+      <tr>
+        <td><label class="check-item"><input type="checkbox"> 식대</label></td>
+        <td><input class="field" placeholder="YYYY-MM-DD"></td>
+        <td><input class="field" placeholder="예: 회의 식비"></td>
+        <td><input class="field right" placeholder="0"></td>
+        <td><input class="field" placeholder=""></td>
+      </tr>
+      <tr>
+        <td><label class="check-item"><input type="checkbox"> 사무용품</label></td>
+        <td><input class="field" placeholder="YYYY-MM-DD"></td>
+        <td><input class="field" placeholder="예: 프린터 용지"></td>
+        <td><input class="field right" placeholder="0"></td>
+        <td><input class="field" placeholder=""></td>
+      </tr>
+      <tr>
+        <td><label class="check-item"><input type="checkbox"> 접대비</label></td>
+        <td><input class="field" placeholder="YYYY-MM-DD"></td>
+        <td><input class="field" placeholder="예: 고객 미팅"></td>
+        <td><input class="field right" placeholder="0"></td>
+        <td><input class="field" placeholder=""></td>
+      </tr>
+      <tr>
+        <td><label class="check-item"><input type="checkbox"> 교육비</label></td>
+        <td><input class="field" placeholder="YYYY-MM-DD"></td>
+        <td><input class="field" placeholder="예: 온라인 강의"></td>
+        <td><input class="field right" placeholder="0"></td>
+        <td><input class="field" placeholder=""></td>
+      </tr>
+      <tr>
+        <td><label class="check-item"><input type="checkbox"> 출장비</label></td>
+        <td><input class="field" placeholder="YYYY-MM-DD"></td>
+        <td><input class="field" placeholder="예: 숙박/교통"></td>
+        <td><input class="field right" placeholder="0"></td>
+        <td><input class="field" placeholder=""></td>
+      </tr>
+
+      <!-- sum row -->
+      <tr>
+        <td class="sumcell">합 계</td>
+        <td colspan="3"></td>
+        <td class="value">
+          <div class="checks" style="justify-content:flex-end;">
+            <span style="font-weight:800;">합계:</span>
+            <input class="field right" style="width:70%;" placeholder="0 원" />
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- ===== 3. 사용 목적 및 상세 설명 ===== -->
+    <div class="mt-8"></div>
+    <table class="box">
+      <tr><td class="section">3. 사용 목적 및 상세 설명</td></tr>
+      <tr>
+        <td class="value">
+          <textarea class="field" placeholder="사용 목적/상세 내용을 작성하세요."></textarea>
+        </td>
+      </tr>
+    </table>
+
+    <!-- ===== 4. 증빙서류 및 결제정보 ===== -->
+    <div class="mt-8"></div>
+    <table class="box">
+      <tr><td class="section" colspan="4">4. 증빙서류 및 결제정보</td></tr>
+
+      <colgroup>
+        <col style="width:18%;">
+        <col style="width:42%;">
+        <col style="width:18%;">
+        <col style="width:22%;">
+      </colgroup>
+
+      <tr>
+        <td class="label">증빙서류</td>
+        <td class="value"><input class="field" placeholder="영수증 및 증빙자료 첨부"></td>
+        <td class="label center">결제금액</td>
+        <td class="value"><input class="field right" placeholder="0"></td>
+      </tr>
+
+      <tr>
+        <td class="label">결제수단</td>
+        <td class="value" colspan="3">
+          <div class="checks">
+            <label class="check-item"><input type="checkbox"> 법인카드</label>
+            <label class="check-item"><input type="checkbox"> 개인카드</label>
+            <label class="check-item"><input type="checkbox"> 현금</label>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- ===== 5. 지출결의 승인 ===== -->
+    <div class="mt-8"></div>
+    <table class="box">
+      <tr><td class="section" colspan="4">5. 지출결의 승인</td></tr>
+
+      <colgroup>
+        <col style="width:18%;">
+        <col style="width:32%;">
+        <col style="width:18%;">
+        <col style="width:32%;">
+      </colgroup>
+
+      <tr>
+        <td class="label">책임자</td>
+        <td class="value"><input class="field" placeholder=""></td>
+        <td class="label">사업자</td>
+        <td class="value"><input class="field" placeholder=""></td>
+      </tr>
+
+      <tr>
+        <td class="label">검토자</td>
+        <td class="value"><input class="field" placeholder=""></td>
+        <td class="label">승인일자</td>
+        <td class="value"><input class="field" placeholder="YYYY-MM-DD"></td>
+      </tr>
+    </table>
+
+    <!-- ===== 6. 이체 계좌 ===== -->
+    <div class="mt-8"></div>
+    <table class="box">
+      <tr><td class="section" colspan="4">6. 이체 계좌</td></tr>
+
+      <colgroup>
+        <col style="width:18%;">
+        <col style="width:42%;">
+        <col style="width:18%;">
+        <col style="width:22%;">
+      </colgroup>
+
+      <tr>
+        <td class="label">예금주:</td>
+        <td class="value"><input class="field" placeholder=""></td>
+        <td class="label center">계좌번호:</td>
+        <td class="value"><input class="field" placeholder=""></td>
+      </tr>
+    </table>
+
+    <!-- ===== Footer note + attachment mock ===== -->
+    <div class="note">
+      ※ 본 결의서와 첨부 영수증이 비용으로 처리되며, 비용 처리 기준에 따라 검토될 수 있습니다.
+    </div>
+
+    <div class="attach-wrap">
+      <div class="attach-left">
+        <label class="check-item"><input type="checkbox"> 증빙서류 첨부</label>
+        <div class="thumbs" aria-label="첨부 썸네일">
+          <div class="thumb">📷</div>
+          <div class="thumb">📷</div>
+          <div class="thumb">📷</div>
+          <div class="thumb">📷</div>
+          <div class="thumb">📷</div>
+        </div>
+      </div>
+      <div class="attach-right">
+        <span class="camera">📷</span>
+        <span>증빙서류 첨부(5장)</span>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
