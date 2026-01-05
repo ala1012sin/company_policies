@@ -14,8 +14,10 @@ app = FastAPI(
     lifespan=mcp_app.lifespan
 )
 
+
 @mcp.tool()
 def searcing_chromadb(query: str, top_k: int = 5):
+    """ChromaDB에서 회사 내규 문서를 검색합니다."""
     results = collection.query(
         query_texts=[query],
         n_results=top_k,
